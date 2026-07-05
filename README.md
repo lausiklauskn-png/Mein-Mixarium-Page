@@ -8,3 +8,5 @@ Landing-Seite für **Mein Mixarium** — das persönliche Getränke-Labor.
 - Inhalt: Demo-Video (App-Rundgang inkl. Themen-Szene), Das Besondere, Tauschen & Sichern, „Bau dir deine eigene Bar", Galerie aus dem echten Buch
 
 GitHub Pages deployt von `main` (root).
+
+<!-- Pages-Neuanstoß 2026-07-05T09:51 -->
