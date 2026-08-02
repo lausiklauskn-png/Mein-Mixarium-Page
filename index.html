@@ -61,7 +61,7 @@
   <header>
     <div class="wrap bar">
       <span class="brand">
-        <img src="assets/icon-192.png" alt="" style="width:30px;height:30px;border-radius:8px" />
+        <img src="assets/icon-192.png" alt="" width="192" height="192" style="width:30px;height:30px;border-radius:8px" />
         <span class="holo">Mein Mixarium</span>
       </span>
       <nav class="top">
@@ -79,7 +79,7 @@
   <main>
     <section class="hero">
       <div class="wrap">
-        <img class="hero-icon" src="assets/icon-512.png" alt="Mein Mixarium Icon" />
+        <img class="hero-icon" src="assets/icon-320.png" alt="Mein Mixarium Icon" width="320" height="320" />
         <div class="hero-title holo">Mein Mixarium</div>
         <p class="lead hero-lead" data-i18n="lead">Dein persönliches Getränke-Labor: Mocktails, Smoothies, Cocktails, Bowlen — als App auf deinem Gerät, offline, mit KI-Labor. Und wenn du willst: komplett umbaubar zu deiner ganz eigenen Bar.</p>
         <div class="hero-ctas">
@@ -92,7 +92,14 @@
     <section id="video">
       <div class="wrap">
         <div class="glass vidbox">
-          <video controls playsinline preload="metadata" poster="assets/poster.jpg">
+          <!-- preload="none": assets/demo.mp4 ist 18,6 MB gross und der moov-Block (die
+               Inhaltsangabe des Videos) liegt am DATEI-ENDE, nicht am Anfang. Mit
+               preload="metadata" muss der Browser dafuer bis ans Ende der 18,6-MB-Datei
+               greifen - das war die Quelle des Konsolenfehlers
+               "assets/demo.mp4 ... ERR_CONNECTION_FAILED" im Lighthouse-Lauf 2026-08-02.
+               Mit "none" wird beim Seitenaufruf gar nichts vom Video geholt; das Poster
+               steht sofort, geladen wird erst beim Klick auf Abspielen. -->
+          <video controls playsinline preload="none" poster="assets/poster.jpg" width="480" height="981">
             <source src="assets/demo.mp4" type="video/mp4">
           </video>
           <p class="vidcap" data-i18n="vid_cap">▶ Die App in Aktion: Getränke-Buch, Suche, Rezept-Wechsel per Wisch, KI-Labor, Wochenplan, 8 Sprachen, Backup-Tresor — und wie du die Themen (Farb-Looks) wechselst.</p>
@@ -140,10 +147,10 @@
           </ol>
           <p class="disc-fair" data-i18n="rb_proof">Der Beweis steckt schon im Buch des Betreibers: neben Bowlen und Cocktails leben dort längst Sushi-Rollen und eine Erdbeer-Torte — das Mixarium macht mit.</p>
           <div class="proofrow">
-            <figure><img src="assets/ref/salatbar.jpg" alt="Salatbar-Vision" loading="lazy"><figcaption data-i18n="rb_v1">So könnte deine Salatbar aussehen — gleiche App, deine Inhalte.</figcaption></figure>
-            <figure><img src="assets/ref/kaffeetheke.jpg" alt="Kaffeetheke-Vision" loading="lazy"><figcaption data-i18n="rb_v2">… oder deine eigene Kaffeetheke — Rezept für Rezept.</figcaption></figure>
-            <figure><img src="assets/ref/salmon-sushi-roll-mit-avocado.jpg" alt="Sushi im Mixarium" loading="lazy"><figcaption data-i18n="rb_f1">Sushi-Rezept — im Getränke-Labor gepflegt wie jeder Drink.</figcaption></figure>
-            <figure><img src="assets/ref/erdbeer-joghurt-torte.jpg" alt="Torte im Mixarium" loading="lazy"><figcaption data-i18n="rb_f2">Erdbeer-Joghurt-Torte — Kategorien sind nur Namen. Deine Namen.</figcaption></figure>
+            <figure><img src="assets/ref/salatbar.jpg" alt="Salatbar-Vision" width="500" height="500" loading="lazy"><figcaption data-i18n="rb_v1">So könnte deine Salatbar aussehen — gleiche App, deine Inhalte.</figcaption></figure>
+            <figure><img src="assets/ref/kaffeetheke.jpg" alt="Kaffeetheke-Vision" width="500" height="500" loading="lazy"><figcaption data-i18n="rb_v2">… oder deine eigene Kaffeetheke — Rezept für Rezept.</figcaption></figure>
+            <figure><img src="assets/ref/salmon-sushi-roll-mit-avocado.jpg" alt="Sushi im Mixarium" width="500" height="443" loading="lazy"><figcaption data-i18n="rb_f1">Sushi-Rezept — im Getränke-Labor gepflegt wie jeder Drink.</figcaption></figure>
+            <figure><img src="assets/ref/erdbeer-joghurt-torte.jpg" alt="Torte im Mixarium" width="500" height="400" loading="lazy"><figcaption data-i18n="rb_f2">Erdbeer-Joghurt-Torte — Kategorien sind nur Namen. Deine Namen.</figcaption></figure>
           </div>
         </div>
       </div>
@@ -154,12 +161,12 @@
         <h2 data-i18n="ga_title">Aus dem echten Buch</h2>
         <p class="sub" data-i18n="ga_sub">Referenz-Bilder aus dem laufenden Mixarium des Betreibers.</p>
         <div class="gal">
-          <div class="shot"><img src="assets/ref/tropische-kokostraum-bowl.jpg" alt="" loading="lazy"><div class="nm">Tropische Kokostraum Bowl</div></div>
-          <div class="shot"><img src="assets/ref/tropische-kokostraum-bowl-alkohol-fr.jpg" alt="" loading="lazy"><div class="nm">Kokostraum-Bowl (alkoholfrei)</div></div>
-          <div class="shot"><img src="assets/ref/blind-russian.jpg" alt="" loading="lazy"><div class="nm">Blind Russian</div></div>
-          <div class="shot"><img src="assets/ref/amaretto-fizz.jpg" alt="" loading="lazy"><div class="nm">Amaretto Fizz</div></div>
-          <div class="shot"><img src="assets/ref/melya.jpg" alt="" loading="lazy"><div class="nm">Melya</div></div>
-          <div class="shot"><img src="assets/ref/salmon-sushi-roll-mit-avocado.jpg" alt="" loading="lazy"><div class="nm">Sushi — der Umbau-Beweis</div></div>
+          <div class="shot"><img src="assets/ref/tropische-kokostraum-bowl.jpg" alt="" width="400" height="500" loading="lazy"><div class="nm">Tropische Kokostraum Bowl</div></div>
+          <div class="shot"><img src="assets/ref/tropische-kokostraum-bowl-alkohol-fr.jpg" alt="" width="400" height="500" loading="lazy"><div class="nm">Kokostraum-Bowl (alkoholfrei)</div></div>
+          <div class="shot"><img src="assets/ref/blind-russian.jpg" alt="" width="500" height="500" loading="lazy"><div class="nm">Blind Russian</div></div>
+          <div class="shot"><img src="assets/ref/amaretto-fizz.jpg" alt="" width="500" height="500" loading="lazy"><div class="nm">Amaretto Fizz</div></div>
+          <div class="shot"><img src="assets/ref/melya.jpg" alt="" width="500" height="500" loading="lazy"><div class="nm">Melya</div></div>
+          <div class="shot"><img src="assets/ref/salmon-sushi-roll-mit-avocado.jpg" alt="" width="500" height="443" loading="lazy"><div class="nm">Sushi — der Umbau-Beweis</div></div>
         </div>
       </div>
     </section>
@@ -175,8 +182,47 @@
     <div class="wrap" style="margin-top:12px;opacity:.7">© 2026 Mein Mixarium · Teil von <a href="https://family-projekt.de/" style="opacity:.9">family-projekt.de</a></div>
   </footer>
 
-  <!-- three.js-Mycel-Hintergrund (1:1 family-project) -->
-  <script type="module" src="assets/mycel-bg.js"></script>
+  <!-- three.js-Mycel-Hintergrund (1:1 family-project) — NACHGELADEN.
+       Befund aus Googles Messung, 2026-08-02: der Hintergrund war mit Abstand
+       das Teuerste an dieser Seite. Nicht wegen der 165 KiB three.js, sondern
+       wegen seiner Dauerschleife — ALLE zwanzig langen Hauptthread-Aufgaben
+       im Bericht stammten aus mycel-bg.js, zusammen rund 39 Sekunden. Auf
+       einem Telefon heisst das: die Seite reagiert beim Ankommen kaum.
+
+       Der Hintergrund ist Schmuck. Schmuck darf warten, bis die Seite steht.
+       Deshalb wird er erst nach `load` geholt, und dann noch in einer
+       Leerlauf-Pause. Sichtbar aendert sich nichts ausser dem Zeitpunkt: er
+       blendet einen Wimpernschlag spaeter auf.
+
+       Zwei Ausnahmen, in denen er GAR NICHT geladen wird:
+         - wer weniger Bewegung eingestellt hat (prefers-reduced-motion) —
+           dann waeren es ohnehin nur ein Standbild und 165 KiB dafuer;
+         - wer Daten sparen will (Save-Data) oder auf einer langsamen
+           Verbindung sitzt. Wer am Datenvolumen spart, will keinen 3D-Schmuck.
+       Ohne das Skript bleibt die Seite vollstaendig benutzbar — der Canvas
+       ist dann einfach leer, das Farbschema traegt den Hintergrund. -->
+  <script>
+    (function () {
+      var mm = window.matchMedia;
+      if (mm && mm('(prefers-reduced-motion: reduce)').matches) return;
+      var v = navigator.connection || {};
+      if (v.saveData === true) return;
+      if (typeof v.effectiveType === 'string' && /^(slow-2g|2g|3g)$/.test(v.effectiveType)) return;
+
+      function holen() {
+        var s = document.createElement('script');
+        s.type = 'module';
+        s.src = 'assets/mycel-bg.js';
+        document.body.appendChild(s);
+      }
+      function gleich() {
+        if (window.requestIdleCallback) requestIdleCallback(holen, { timeout: 2500 });
+        else setTimeout(holen, 400);
+      }
+      if (document.readyState === 'complete') gleich();
+      else window.addEventListener('load', gleich, { once: true });
+    })();
+  </script>
 
   <!-- Seiten-Texte (DE/EN) -->
   <script>
