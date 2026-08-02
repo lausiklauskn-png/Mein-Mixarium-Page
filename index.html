@@ -38,7 +38,13 @@
     .vidcap{margin-top:10px;font-size:.86rem;color:var(--muted)}
     .proofrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
     .proofrow figure{margin:0}
-    .proofrow img{width:100%;border-radius:12px;display:block;border:1px solid var(--line)}
+    /* height:auto ist hier PFLICHT, seit die Bilder width/height im HTML tragen
+       (Lighthouse-Punkt "Bildmasse angeben"). Ohne height:auto wuerde die starre
+       Hoehe aus dem HTML-Attribut gelten, waehrend die Breite auf 100% schrumpft -
+       die Bilder werden dann in der Handy-Ansicht hochgezogen. Mit height:auto
+       nimmt der Browser die beiden Attribute nur noch als Seitenverhaeltnis, haelt
+       den Platz vorab frei UND zeigt das Bild unverzerrt. */
+    .proofrow img{width:100%;height:auto;border-radius:12px;display:block;border:1px solid var(--line)}
     .proofrow figcaption{font-size:.78rem;color:var(--muted);margin-top:6px}
     .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
     .gal .shot{border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--card);
