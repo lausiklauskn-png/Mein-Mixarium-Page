@@ -59,6 +59,15 @@
     .ideas{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
     .ideas .pill{cursor:default}
     section{margin:34px 0}
+    /* Fuss-Zeile mit dem Urheberrecht. Der Verweis darin hat DIESELBE Farbe wie
+     * der Text drumherum (beide --muted, siehe Kommentar an der Zeile selbst).
+     * Ohne Unterstreichung waere er als Verweis nicht zu erkennen: Lighthouse
+     * beanstandet das NICHT, weil seine Regel nur bei einem FARB-Unterschied
+     * greift — ein Mensch sieht ihn trotzdem nicht. Also unterstreichen; das
+     * ist ohnehin das, was die Regel dem Sinn nach verlangt (erkennbar an mehr
+     * als nur der Farbe). */
+    .footer-copy{margin-top:12px}
+    .footer-copy a{text-decoration:underline;text-underline-offset:2px}
   </style>
 </head>
 <body>
@@ -185,7 +194,12 @@
       <a href="https://family-projekt.de/" title="Family Projekt — Werkzeuge, Apps &amp; ein freies Netzwerk">🌐 Family Projekt</a>
       <a href="https://lausiklauskn-png.github.io/Mein-Mixarium/impressum.html" style="margin-left:auto" data-i18n="imprint">Impressum &amp; Datenschutz</a>
     </div>
-    <div class="wrap" style="margin-top:12px;opacity:.7">© 2026 Mein Mixarium · Teil von <a href="https://family-projekt.de/" style="opacity:.9">family-projekt.de</a></div>
+    <!-- KEIN opacity hier (Klaus' Bericht 2026-08-08: Kontrast 4,38 / 4,24 / 3,02
+         statt der geforderten 4,5). opacity schlaegt jede Farbwahl DARIN — der
+         Verweis stand auf opacity:.9 und war trotzdem blasser als noetig, weil
+         die .7 des Elternteils obendrauf kam. Die Farbe --muted allein traegt in
+         allen drei Themen ueber 5,6 : 1. -->
+    <div class="wrap footer-copy">© 2026 Mein Mixarium · Teil von <a href="https://family-projekt.de/">family-projekt.de</a></div>
   </footer>
 
   <!-- three.js-Mycel-Hintergrund (1:1 family-project) — NACHGELADEN.
@@ -298,23 +312,38 @@
 <style>
   .fp-badge-wrap{max-width:960px;margin:30px auto 18px;padding:0 16px;text-align:center;
     font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;}
+  /* KEIN @media (prefers-color-scheme) mehr (Klaus' Bericht 2026-08-08).
+   *
+   * Der Block richtete sich nach dem BETRIEBSSYSTEM, die Seite nach ihrem
+   * EIGENEN Themen-Schalter (Dunkel/Neon/Hell, --bg/--muted/--accent auf dem
+   * Wurzel-Element). Beide koennen sich widersprechen — und taten es: wer das
+   * System auf Hell stehen hat und die Seite auf Dunkel, bekam das dunkle
+   * Tuerkis #0f766e auf fast schwarzem Grund, Kontrast 3,55 : 1 statt 4,5.
+   * Der Fuss-Text lag bei 2,60 : 1.
+   *
+   * Jetzt folgt der Block den Farben der SEITE. Damit stimmt er in jedem Thema
+   * und kann gar nicht mehr auseinanderlaufen. Die Rueckfallwerte halten ihn
+   * fuer Forker brauchbar, die diese Variablen nicht haben.               */
   .fp-badge{display:inline-flex;align-items:center;gap:.5em;padding:7px 15px;
-    border-radius:999px;border:1px solid rgba(110,231,211,.38);color:#6ee7d3;
-    background:rgba(110,231,211,.06);font-size:.82rem;text-decoration:none;
+    border-radius:999px;border:1px solid currentColor;
+    /* Die Akzentfarbe allein traegt nicht in jedem Thema: im Hellen kam
+     * #0e8f86 auf #f4f6fa nur auf 3,67 : 1. Beigemischt wird deshalb --text —
+     * das ist per Definition die kontraststarke Farbe GEGEN --bg, also zieht
+     * die Mischung im hellen Thema nach dunkel und im dunklen nach hell. Ein
+     * Regel-Satz, der sich in beide Richtungen selbst korrigiert.          */
+    color:color-mix(in srgb, var(--accent,#6ee7d3) 72%, var(--text,#e8eef7));
+    background:color-mix(in srgb, currentColor 8%, transparent);
+    font-size:.82rem;text-decoration:none;
     transition:background .18s ease,border-color .18s ease;}
-  .fp-badge:hover,.fp-badge:focus-visible{background:rgba(110,231,211,.15);
-    border-color:rgba(110,231,211,.72);outline:none;}
-  .fp-badge.fp-strong{background:rgba(110,231,211,.13);
-    border-color:rgba(110,231,211,.55);font-size:.86rem;padding:8px 17px;}
-  .fp-badge .fp-dot{width:7px;height:7px;border-radius:50%;background:#6ee7d3;
-    box-shadow:0 0 7px rgba(110,231,211,.85);flex:none;}
-  .fp-copy{margin-top:9px;font-size:.72rem;line-height:1.5;color:#9aa7b6;opacity:.78;}
-  @media (prefers-color-scheme: light){
-    .fp-badge{color:#0f766e;border-color:rgba(15,118,110,.35);background:rgba(15,118,110,.05);}
-    .fp-badge:hover,.fp-badge:focus-visible{background:rgba(15,118,110,.12);}
-    .fp-badge .fp-dot{background:#0f766e;box-shadow:0 0 7px rgba(15,118,110,.5);}
-    .fp-copy{color:#5b6b7a;}
-  }
+  .fp-badge:hover,.fp-badge:focus-visible{
+    background:color-mix(in srgb, currentColor 18%, transparent);outline:none;}
+  .fp-badge.fp-strong{background:color-mix(in srgb, currentColor 15%, transparent);
+    font-size:.86rem;padding:8px 17px;}
+  .fp-badge .fp-dot{width:7px;height:7px;border-radius:50%;background:currentColor;
+    box-shadow:0 0 7px currentColor;flex:none;}
+  /* KEIN opacity: es schlaegt jede Farbwahl darin. --muted traegt in allen drei
+   * Themen ueber 5,6 : 1, die frueheren .78 druecken es auf 2,6.           */
+  .fp-copy{margin-top:9px;font-size:.72rem;line-height:1.5;color:var(--muted,#9aa7b6);}
 </style>
 <div class="fp-badge-wrap">
   <a class="fp-badge" href="https://family-projekt.de" target="_blank" rel="noopener"
