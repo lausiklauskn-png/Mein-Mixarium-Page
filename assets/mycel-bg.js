@@ -15,8 +15,18 @@
  *
  * Lädt als <script type="module"> mit Importmap "three" -> vendor.
  */
-import * as THREE from 'three';
-
+/* three.js wird NACHGELADEN statt fest eingebunden (nachgezogen 2026-08-08,
+ * an der Schwester-Seite Mein-Rezeptbuch-Page seit 2026-08-02 bewaehrt).
+ * Vorher stand hier `import * as THREE from 'three'`. Dadurch hing die
+ * 165-KiB-Bibliothek in der kritischen Kette des Seitenaufbaus — in Klaus'
+ * Bericht vom 2026-08-08 war sie mit 1.606 ms der laengste Pfad ueberhaupt,
+ * obwohl sie fuer den ersten Eindruck der Seite nichts beitraegt.
+ *
+ * Jetzt startet der Hintergrund erst, wenn die Seite steht UND der Hauptfaden
+ * Luft hat. Sichtbar aendert sich nur, dass die Punkt-Wolke einen
+ * Wimpernschlag spaeter einsetzt. Schlaegt das Laden fehl, bleibt die Seite
+ * vollstaendig benutzbar — sie hat dann nur keinen bewegten Hintergrund.    */
+function mycelBgStarten(THREE) {
 const canvas = document.getElementById('bg');
 if (canvas) {
   const reduce = window.matchMedia &&
@@ -219,9 +229,42 @@ if (canvas) {
 
   // ---- Schleife ----------------------------------------------------------
   let last = performance.now();
+
+  /* ── Selbst-Bremse (uebernommen von family-projekt.de, Klaus' Entscheid
+   * 2026-08-02; hier nachgezogen 2026-08-08) ───────────────────────────────
+   * Auf einem Geraet MIT Grafikbeschleunigung kostet ein Bild ~2 ms. Ohne
+   * (alte Handys, und jedes Pruefgeraet bei PageSpeed) sind es Hunderte. In
+   * Klaus' Bericht vom 2026-08-08 waren ALLE zwanzig laengsten Aufgaben
+   * dieser Seite diese Datei, jede 540-640 ms — das sind knapp zwei Bilder
+   * je Sekunde. Die "Bewegung" war da laengst keine mehr, sie hat nur noch
+   * gerechnet: 39 Sekunden Hauptthread-Arbeit unter "Other".
+   *
+   * Wird es also dauerhaft zu langsam, bleibt ein STATISCHES Bild stehen —
+   * genau dasselbe, das Geraete mit "Bewegung reduzieren" von jeher bekommen.
+   * Der Hintergrund verschwindet nicht, er hoert nur auf, sich zu drehen.
+   *
+   * Auf Klaus' Tablet greift die Bremse nie: dort liegt dt bei ~0,016 s,
+   * die Schwelle bei 0,05 s (20 Bilder/s). Die ersten Bilder zaehlen nicht
+   * mit, weil der erste Aufbau immer teurer ist (Aufwaermen), und ein
+   * einzelner Ausreisser setzt den Zaehler zurueck — es braucht fuenf
+   * langsame Bilder HINTEREINANDER.                                        */
+  const BREMS_SCHWELLE = 0.05;   // Sekunden pro Bild = 20 Bilder/s
+  const BREMS_GEDULD   = 5;      // so viele langsame Bilder hintereinander
+  const AUFWAERM_BILDER = 3;     // erste Bilder nicht bewerten
+  let langsamInFolge = 0, bilderGezaehlt = 0;
+
   function tick() {
     const now = performance.now();
     const dt = (now - last) / 1000; last = now;
+
+    if (bilderGezaehlt++ >= AUFWAERM_BILDER) {
+      if (dt > BREMS_SCHWELLE) langsamInFolge++; else langsamInFolge = 0;
+      if (langsamInFolge >= BREMS_GEDULD) {
+        renderOnce();            // ein letztes, stehendes Bild
+        return;                  // Schleife endet — kein Dauerlauf mehr
+      }
+    }
+
     mat.uniforms.uTime.value = now / 1000;
     mycelGroup.rotation.y += dt * 0.02;
     applyScroll();
@@ -235,3 +278,20 @@ if (canvas) {
     requestAnimationFrame(tick);
   }
 }
+}
+
+/* Der Anstoss: erst nach "load", und dann erst, wenn der Hauptfaden Luft hat. */
+(function () {
+  /* KEIN nachtraegliches setTheme() hier — anders als an der Schwester-Seite
+   * Mein-Rezeptbuch-Page nimmt setTheme() hier einen Themen-NAMEN entgegen
+   * (Dunkel/Neon/Hell) und faellt ohne Argument auf "Dunkel" zurueck. Ein
+   * leerer Aufruf wuerde Neon und Hell stillschweigend ueberschreiben.
+   * Noetig ist er ohnehin nicht: mycelBgStarten wendet das gespeicherte Thema
+   * (localStorage "fp_theme") selbst an, sobald es laeuft.                  */
+  const los = () => import('three').then(mycelBgStarten).catch(() => {});
+  const gleich = () => (window.requestIdleCallback
+    ? requestIdleCallback(los, { timeout: 2000 })
+    : setTimeout(los, 200));
+  if (document.readyState === 'complete') gleich();
+  else window.addEventListener('load', gleich, { once: true });
+})();
