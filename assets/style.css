@@ -75,6 +75,17 @@ nav.top a:hover::before,nav.top a:focus-visible::before{opacity:1}
 .pill>*{position:relative}
 .pill:hover{color:var(--text);border-color:var(--accent);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.4),inset 0 -2px 4px rgba(0,0,0,.45),var(--glow)}
 .pill:hover::before{opacity:.9}
+/* 🎤-Sprachwahl in der Kopfleiste: EINE Wahl für alle Mikrofone der Seite.
+ * Ein <select> bringt seinen eigenen Rahmen mit — der wird abgenommen, damit
+ * es aussieht wie die Nachbar-Pillen; die Liste selbst muss lesbar bleiben,
+ * darum bekommen die Einträge eine eigene Farbe (sonst hellgrau auf Weiß). */
+.pill.pill-miclang{appearance:none;-webkit-appearance:none;font-family:var(--mono);max-width:12rem;
+  padding-right:22px;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 13px) 52%,calc(100% - 9px) 52%;background-size:4px 4px,4px 4px;background-repeat:no-repeat}
+.pill.pill-miclang option{color:#16202c;background:#fff}
+/* Ohne diesen Satz verschwindet jeder Sprach-Fehler lautlos. */
+.mic-hinweis{margin:6px 2px 0;font-size:.82rem;line-height:1.45;color:var(--muted)}
+.mic-hinweis:empty{display:none}
 
 /* Kopf-Status (SBKIM-Lampen + Siegel-Badge) */
 .status{display:inline-flex;align-items:center;gap:9px;margin-left:4px}
