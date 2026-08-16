@@ -10,3 +10,11 @@ Landing-Seite für **Mein Mixarium** — das persönliche Getränke-Labor.
 GitHub Pages deployt von `main` (root).
 
 <!-- Pages-Neuanstoß 2026-07-05T09:51 -->
+
+---
+
+## Rechte
+
+Rechteinhaber ist Klaus Nitzsche. Welche Lizenz gilt und welche Rolle die
+KI-Werkzeuge hatten, steht in [`RECHTE.md`](RECHTE.md); der Lizenztext in
+[`LICENSE`](LICENSE).
